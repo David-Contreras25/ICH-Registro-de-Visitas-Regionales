@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ICH — Registro de Visitas</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul: #003366;
+    --azul-medio: #0055A4;
+    --azul-claro: #E8F0FA;
+    --rojo: #C0392B;
+    --verde: #1A6B2E;
+    --gris: #F4F6F9;
+    --gris-borde: #DDE3ED;
+    --texto: #1A2233;
+    --texto-suave: #6B7A99;
+    --blanco: #FFFFFF;
+    --sombra: 0 4px 24px rgba(0,51,102,0.10);
+    --radio: 14px;
+    --radio-sm: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--gris);
+    color: var(--texto);
+    min-height: 100vh;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* ── PANTALLAS ── */
+  .pantalla { display: none; flex-direction: column; min-height: 100vh; }
+  .pantalla.activa { display: flex; }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--azul);
+    color: white;
+    padding: 18px 20px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 2px 12px rgba(0,51,102,0.18);
+  }
+  .header-logo {
+    width: 36px; height: 36px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .header-titulo { font-size: 16px; font-weight: 700; line-height: 1.2; }
+  .header-subtitulo { font-size: 11px; opacity: 0.75; font-weight: 400; }
+  .header-back {
+    background: none; border: none; color: white;
+    font-size: 22px; cursor: pointer; padding: 4px;
+    margin-right: 4px; flex-shrink: 0;
+  }
+
+  /* ── CONTENIDO ── */
+  .contenido { flex: 1; padding: 20px 16px; overflow-y: auto; }
+
+  /* ── LOGIN ── */
+  .login-hero {
+    text-align: center;
+    padding: 32px 20px 28px;
+    background: linear-gradient(145deg, var(--azul) 0%, var(--azul-medio) 100%);
+    color: white;
+  }
+  .login-icon {
+    width: 72px; height: 72px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 20px;
+    margin: 0 auto 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px;
+  }
+  .login-hero h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+  .login-hero p { font-size: 13px; opacity: 0.8; }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--blanco);
+    border-radius: var(--radio);
+    padding: 20px;
+    box-shadow: var(--sombra);
+    margin-bottom: 16px;
+  }
+  .card-titulo {
+    font-size: 13px; font-weight: 600;
+    color: var(--azul-medio);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .card-titulo span { font-size: 16px; }
+
+  /* ── CAMPOS ── */
+  .campo { margin-bottom: 16px; }
+  .campo:last-child { margin-bottom: 0; }
+  .campo label {
+    display: block;
+    font-size: 12px; font-weight: 600;
+    color: var(--texto-suave);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+  }
+  .campo label .req { color: var(--rojo); margin-left: 2px; }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="date"],
+  select,
+  textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid var(--gris-borde);
+    border-radius: var(--radio-sm);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--texto);
+    background: var(--blanco);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--azul-medio);
+    box-shadow: 0 0 0 3px rgba(0,85,164,0.12);
+  }
+  input[type="password"] { letter-spacing: 0.15em; }
+  textarea { resize: none; min-height: 90px; }
+  select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7A99' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 38px; }
+  select:disabled { background-color: var(--gris); color: var(--texto-suave); }
+
+  .campo-fila { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  /* ── BOTONES ── */
+  .btn {
+    width: 100%; padding: 15px;
+    border: none; border-radius: var(--radio-sm);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px; font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.2s, opacity 0.2s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--azul) 0%, var(--azul-medio) 100%);
+    color: white;
+    box-shadow: 0 4px 16px rgba(0,51,102,0.25);
+  }
+  .btn-primary:hover { box-shadow: 0 6px 20px rgba(0,51,102,0.35); }
+  .btn-success {
+    background: linear-gradient(135deg, #1A6B2E 0%, #27AE60 100%);
+    color: white;
+    box-shadow: 0 4px 16px rgba(26,107,46,0.25);
+  }
+  .btn-outline {
+    background: transparent;
+    color: var(--texto-suave);
+    border: 1.5px solid var(--gris-borde);
+  }
+  .btn-danger-outline {
+    background: transparent;
+    color: var(--rojo);
+    border: 1.5px solid rgba(192,57,43,0.3);
+    font-size: 14px; padding: 11px;
+  }
+  .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  /* ── BIENVENIDA ── */
+  .bienvenida {
+    background: linear-gradient(135deg, var(--azul) 0%, var(--azul-medio) 100%);
+    color: white;
+    border-radius: var(--radio);
+    padding: 20px;
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .bienvenida-avatar {
+    width: 48px; height: 48px; flex-shrink: 0;
+    background: rgba(255,255,255,0.2);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+  }
+  .bienvenida-nombre { font-size: 17px; font-weight: 700; }
+  .bienvenida-sub { font-size: 12px; opacity: 0.8; margin-top: 2px; }
+
+  /* ── VISITAS LISTA ── */
+  .visita-card {
+    background: var(--blanco);
+    border-radius: var(--radio);
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: var(--sombra);
+    border-left: 4px solid var(--azul-medio);
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .visita-card:active { transform: scale(0.99); }
+  .visita-card.virtual { border-left-color: var(--texto-suave); }
+  .visita-sucursal { font-size: 15px; font-weight: 600; color: var(--texto); margin-bottom: 6px; }
+  .visita-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .badge {
+    font-size: 11px; font-weight: 600;
+    padding: 3px 10px; border-radius: 20px;
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .badge-presencial { background: #E8F5E9; color: #1A6B2E; }
+  .badge-virtual { background: #F0F4FF; color: #3B5BDB; }
+  .badge-fecha { background: var(--azul-claro); color: var(--azul); }
+  .badge-estado { background: var(--gris); color: var(--texto-suave); }
+
+  .empty-state {
+    text-align: center; padding: 48px 20px;
+    color: var(--texto-suave);
+  }
+  .empty-icon { font-size: 48px; margin-bottom: 12px; }
+  .empty-state h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; color: var(--texto); }
+  .empty-state p { font-size: 14px; line-height: 1.5; }
+
+  /* ── SECCIÓN GASTOS ── */
+  .seccion-gastos {
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+  .seccion-gastos.oculto {
+    max-height: 0 !important;
+    opacity: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* ── TIPO VISITA TOGGLE ── */
+  .tipo-toggle {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 8px; margin-top: 4px;
+  }
+  .tipo-btn {
+    padding: 12px;
+    border: 2px solid var(--gris-borde);
+    border-radius: var(--radio-sm);
+    background: var(--blanco);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px; font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    color: var(--texto-suave);
+  }
+  .tipo-btn.activo-presencial {
+    border-color: var(--verde);
+    background: #E8F5E9;
+    color: var(--verde);
+  }
+  .tipo-btn.activo-virtual {
+    border-color: #3B5BDB;
+    background: #F0F4FF;
+    color: #3B5BDB;
+  }
+
+  /* ── ZONA AUTO ── */
+  .zona-auto {
+    background: var(--azul-claro);
+    border: 1.5px solid var(--gris-borde);
+    border-radius: var(--radio-sm);
+    padding: 12px 14px;
+    font-size: 15px;
+    color: var(--azul);
+    font-weight: 500;
+    min-height: 46px;
+    display: flex; align-items: center;
+  }
+
+  /* ── CONFIRMACIÓN ── */
+  .confirmacion {
+    flex: 1;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 40px 24px; text-align: center;
+  }
+  .confirmacion-icon {
+    width: 90px; height: 90px;
+    background: linear-gradient(135deg, #1A6B2E, #27AE60);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 42px; margin-bottom: 24px;
+    box-shadow: 0 8px 32px rgba(26,107,46,0.25);
+    animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  @keyframes pop {
+    0% { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .confirmacion h2 { font-size: 24px; font-weight: 700; margin-bottom: 10px; color: var(--texto); }
+  .confirmacion p { font-size: 15px; color: var(--texto-suave); line-height: 1.6; margin-bottom: 8px; }
+  .confirmacion-id {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    background: var(--gris);
+    padding: 8px 16px;
+    border-radius: 8px;
+    color: var(--azul);
+    margin: 12px 0 28px;
+  }
+
+  /* ── TOAST / NOTIFICACIONES ── */
+  .toast {
+    position: fixed; bottom: 20px; left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--texto);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 14px; font-weight: 500;
+    z-index: 1000;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    max-width: 340px; text-align: center;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  }
+  .toast.visible { transform: translateX(-50%) translateY(0); }
+  .toast.error { background: var(--rojo); }
+  .toast.success { background: var(--verde); }
+
+  /* ── LOADING ── */
+  .loading-overlay {
+    position: fixed; inset: 0;
+    background: rgba(255,255,255,0.85);
+    display: none; align-items: center; justify-content: center;
+    flex-direction: column; gap: 16px;
+    z-index: 100;
+  }
+  .loading-overlay.visible { display: flex; }
+  .spinner {
+    width: 40px; height: 40px;
+    border: 3px solid var(--gris-borde);
+    border-top-color: var(--azul-medio);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-texto { font-size: 14px; color: var(--texto-suave); font-weight: 500; }
+
+  .divider { height: 1px; background: var(--gris-borde); margin: 16px 0; }
+  .mt-12 { margin-top: 12px; }
+  .mt-16 { margin-top: 16px; }
+</style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div class="loading-overlay" id="loading">
+  <div class="spinner"></div>
+  <div class="loading-texto" id="loadingTexto">Cargando...</div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- PANTALLA LOGIN -->
+<!-- ════════════════════════════════════════ -->
+<div class="pantalla activa" id="pantallaLogin">
+  <div class="login-hero">
+    <div class="login-icon">🏢</div>
+    <h1>Instituto de Capacitación Helvex</h1>
+    <p>Registro de Visitas de Capacitación</p>
+  </div>
+
+  <div class="contenido">
+    <div class="card">
+      <div class="card-titulo"><span>🔐</span> Iniciar Sesión</div>
+
+      <div class="campo">
+        <label>Correo Institucional <span class="req">*</span></label>
+        <input type="email" id="loginCorreo" placeholder="usuario@helvex.com">
+      </div>
+
+      <div class="campo">
+        <label>Contraseña (No. de Empleado) <span class="req">*</span></label>
+        <input type="password" id="loginPassword" placeholder="••••••••">
+      </div>
+
+      <div class="mt-16">
+        <button class="btn btn-primary" onclick="iniciarSesion()">
+          <span>Entrar</span> →
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- PANTALLA INICIO -->
+<!-- ════════════════════════════════════════ -->
+<div class="pantalla" id="pantallaInicio">
+  <div class="header">
+    <div class="header-logo">📋</div>
+    <div>
+      <div class="header-titulo">Registro de Visitas</div>
+      <div class="header-subtitulo">ICH — Oficina Puebla</div>
+    </div>
+  </div>
+
+  <div class="contenido">
+    <div class="bienvenida">
+      <div class="bienvenida-avatar">👤</div>
+      <div>
+        <div class="bienvenida-nombre" id="nombreBienvenida">—</div>
+        <div class="bienvenida-sub">Mis visitas registradas</div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary mt-12" onclick="irAFormulario()" style="margin-bottom:20px">
+      + Nueva Visita
+    </button>
+
+    <div id="listaVisitas">
+      <div class="empty-state">
+        <div class="empty-icon">📭</div>
+        <h3>Sin visitas registradas</h3>
+        <p>Tus visitas aparecerán aquí una vez que las registres.</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <button class="btn btn-danger-outline" onclick="cerrarSesion()">
+      Cerrar Sesión
+    </button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- PANTALLA FORMULARIO -->
+<!-- ════════════════════════════════════════ -->
+<div class="pantalla" id="pantallaFormulario">
+  <div class="header">
+    <button class="header-back" onclick="irAInicio()">‹</button>
+    <div class="header-logo">✏️</div>
+    <div>
+      <div class="header-titulo">Nueva Visita</div>
+      <div class="header-subtitulo">Completa todos los campos</div>
+    </div>
+  </div>
+
+  <div class="contenido">
+
+    <!-- DATOS DEL INSTRUCTOR -->
+    <div class="card">
+      <div class="card-titulo"><span>👤</span> Datos del Instructor</div>
+
+      <div class="campo">
+        <label>Instructor</label>
+        <input type="text" id="fInstructor" readonly style="background:var(--gris);color:var(--azul);font-weight:600;">
+      </div>
+
+      <div class="campo-fila">
+        <div class="campo">
+          <label>Fecha Inicio <span class="req">*</span></label>
+          <input type="date" id="fFechaInicio">
+        </div>
+        <div class="campo">
+          <label>Fecha Término <span class="req">*</span></label>
+          <input type="date" id="fFechaTermino">
+        </div>
+      </div>
+
+      <div class="campo">
+        <label>Tipo de Visita <span class="req">*</span></label>
+        <div class="tipo-toggle">
+          <button class="tipo-btn activo-presencial" id="btnPresencial" onclick="seleccionarTipo('Presencial')">
+            🚗 Presencial
+          </button>
+          <button class="tipo-btn" id="btnVirtual" onclick="seleccionarTipo('Virtual')">
+            💻 Virtual
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- UBICACIÓN -->
+    <div class="card">
+      <div class="card-titulo"><span>📍</span> Ubicación de la Visita</div>
+
+      <div class="campo">
+        <label>Estado <span class="req">*</span></label>
+        <select id="fEstado" onchange="actualizarDistribuidores()">
+          <option value="">— Selecciona un estado —</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <label>Distribuidor <span class="req">*</span></label>
+        <select id="fDistribuidor" onchange="actualizarSucursales()" disabled>
+          <option value="">— Selecciona primero el estado —</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <label>Sucursal <span class="req">*</span></label>
+        <select id="fSucursal" onchange="actualizarZona()" disabled>
+          <option value="">— Selecciona primero el distribuidor —</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <label>Zona (automático)</label>
+        <div class="zona-auto" id="fZona">—</div>
+      </div>
+    </div>
+
+    <!-- PERSONAL -->
+    <div class="card">
+      <div class="card-titulo"><span>👥</span> Personal Capacitado</div>
+      <div class="campo">
+        <label>Total de personas capacitadas <span class="req">*</span></label>
+        <input type="number" id="fPersonal" placeholder="0" min="0">
+      </div>
+    </div>
+
+    <!-- GASTOS -->
+    <div class="seccion-gastos" id="seccionGastos">
+      <div class="card">
+        <div class="card-titulo"><span>💰</span> Gastos de la Visita</div>
+
+        <div class="campo-fila">
+          <div class="campo">
+            <label>Comida $</label>
+            <input type="number" id="fComida" placeholder="0.00" min="0" step="0.01">
+          </div>
+          <div class="campo">
+            <label>Gasolina $</label>
+            <input type="number" id="fGasolina" placeholder="0.00" min="0" step="0.01">
+          </div>
+        </div>
+
+        <div class="campo-fila">
+          <div class="campo">
+            <label>Casetas $</label>
+            <input type="number" id="fCasetas" placeholder="0.00" min="0" step="0.01">
+          </div>
+          <div class="campo">
+            <label>Vuelos $</label>
+            <input type="number" id="fVuelos" placeholder="0.00" min="0" step="0.01">
+          </div>
+        </div>
+
+        <div class="campo-fila">
+          <div class="campo">
+            <label>Hospedaje $</label>
+            <input type="number" id="fHospedaje" placeholder="0.00" min="0" step="0.01">
+          </div>
+          <div class="campo">
+            <label>No. Noches</label>
+            <input type="number" id="fNoches" placeholder="0" min="0">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMENTARIOS -->
+    <div class="card">
+      <div class="card-titulo"><span>📝</span> Adicional</div>
+      <div class="campo">
+        <label>Comentarios</label>
+        <textarea id="fComentarios" placeholder="Observaciones adicionales de la visita..."></textarea>
+      </div>
+    </div>
+
+    <!-- BOTONES -->
+    <button class="btn btn-success mt-12" onclick="guardarVisita()">
+      ✓ Guardar Visita
+    </button>
+    <button class="btn btn-outline mt-12" onclick="irAInicio()" style="margin-bottom:32px">
+      Cancelar
+    </button>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- PANTALLA CONFIRMACIÓN -->
+<!-- ════════════════════════════════════════ -->
+<div class="pantalla" id="pantallaConfirmacion">
+  <div class="header">
+    <div class="header-logo">✅</div>
+    <div>
+      <div class="header-titulo">Visita Registrada</div>
+      <div class="header-subtitulo">ICH — Registro de Visitas</div>
+    </div>
+  </div>
+
+  <div class="confirmacion">
+    <div class="confirmacion-icon">✓</div>
+    <h2>¡Registro Exitoso!</h2>
+    <p>Tu visita fue guardada correctamente en el sistema.</p>
+    <div class="confirmacion-id" id="confirmacionId">ICH-000000</div>
+    <button class="btn btn-primary" style="max-width:280px" onclick="irAInicio()">
+      Ir al Inicio
+    </button>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════
+// CONFIGURACIÓN
+// ════════════════════════════════════════
+const API_URL = 'https://script.google.com/macros/s/AKfycbxHwPWl4rklleoIr03BYNk_aQfuZlHdYXYzcnNl6uU1wHS1MhVAYc_z9o5-8nJ1uXWdYg/exec';
+
+let usuarioActual = null;
+let catalogoData = [];
+let tipoVisitaActual = 'Presencial';
+
+// ════════════════════════════════════════
+// NAVEGACIÓN
+// ════════════════════════════════════════
+function mostrarPantalla(id) {
+  document.querySelectorAll('.pantalla').forEach(p => p.classList.remove('activa'));
+  document.getElementById(id).classList.add('activa');
+  window.scrollTo(0, 0);
+}
+
+function irAInicio() {
+  cargarVisitas();
+  mostrarPantalla('pantallaInicio');
+}
+
+function irAFormulario() {
+  resetFormulario();
+  mostrarPantalla('pantallaFormulario');
+}
+
+function cerrarSesion() {
+  usuarioActual = null;
+  mostrarPantalla('pantallaLogin');
+  document.getElementById('loginCorreo').value = '';
+  document.getElementById('loginPassword').value = '';
+}
+
+// ════════════════════════════════════════
+// LOADING Y TOAST
+// ════════════════════════════════════════
+function mostrarLoading(texto = 'Cargando...') {
+  document.getElementById('loadingTexto').textContent = texto;
+  document.getElementById('loading').classList.add('visible');
+}
+function ocultarLoading() {
+  document.getElementById('loading').classList.remove('visible');
+}
+function mostrarToast(msg, tipo = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + tipo;
+  setTimeout(() => t.classList.add('visible'), 10);
+  setTimeout(() => t.classList.remove('visible'), 3500);
+}
+
+// ════════════════════════════════════════
+// API
+// ════════════════════════════════════════
+async function llamarAPI(params) {
+  const url = API_URL + '?' + new URLSearchParams(params);
+  const res = await fetch(url);
+  return await res.json();
+}
+
+async function llamarAPIPost(data) {
+  const res = await fetch(API_URL + '?action=saveVisita', {
+    method: 'POST',
+    body: JSON.stringify(data)
+  });
+  return await res.json();
+}
+
+// ════════════════════════════════════════
+// LOGIN
+// ════════════════════════════════════════
+async function iniciarSesion() {
+  const correo = document.getElementById('loginCorreo').value.trim();
+  const password = document.getElementById('loginPassword').value.trim();
+
+  if (!correo || !password) {
+    mostrarToast('Completa todos los campos', 'error');
+    return;
+  }
+
+  mostrarLoading('Verificando credenciales...');
+  try {
+    const res = await llamarAPI({ action: 'login', correo, password });
+    if (res.success) {
+      usuarioActual = { nombre: res.nombre, correo: res.correo };
+      document.getElementById('nombreBienvenida').textContent = res.nombre;
+      document.getElementById('fInstructor').value = res.nombre;
+      await cargarCatalogo();
+      await cargarVisitas();
+      mostrarPantalla('pantallaInicio');
+    } else {
+      mostrarToast('Credenciales incorrectas. Verifica tu correo y contraseña.', 'error');
+    }
+  } catch (err) {
+    mostrarToast('Error de conexión. Intenta de nuevo.', 'error');
+  }
+  ocultarLoading();
+}
+
+// Enter en login
+document.getElementById('loginPassword').addEventListener('keypress', e => {
+  if (e.key === 'Enter') iniciarSesion();
+});
+
+// ════════════════════════════════════════
+// CATÁLOGO
+// ════════════════════════════════════════
+async function cargarCatalogo() {
+  try {
+    const res = await llamarAPI({ action: 'getCatalogo' });
+    catalogoData = res.catalogo || [];
+    poblarEstados();
+  } catch (err) {
+    mostrarToast('Error al cargar el catálogo', 'error');
+  }
+}
+
+function poblarEstados() {
+  const estados = [...new Set(catalogoData.map(r => r.Estado))].filter(Boolean).sort();
+  const sel = document.getElementById('fEstado');
+  sel.innerHTML = '<option value="">— Selecciona un estado —</option>';
+  estados.forEach(e => {
+    const opt = document.createElement('option');
+    opt.value = e; opt.textContent = e;
+    sel.appendChild(opt);
+  });
+}
+
+function actualizarDistribuidores() {
+  const estado = document.getElementById('fEstado').value;
+  const selD = document.getElementById('fDistribuidor');
+  const selS = document.getElementById('fSucursal');
+
+  selD.innerHTML = '<option value="">— Selecciona un distribuidor —</option>';
+  selS.innerHTML = '<option value="">— Selecciona primero el distribuidor —</option>';
+  selS.disabled = true;
+  document.getElementById('fZona').textContent = '—';
+
+  if (!estado) { selD.disabled = true; return; }
+
+  const distribuidores = [...new Set(
+    catalogoData.filter(r => r.Estado === estado).map(r => r.Distribuidor)
+  )].filter(Boolean).sort();
+
+  distribuidores.forEach(d => {
+    const opt = document.createElement('option');
+    opt.value = d; opt.textContent = d;
+    selD.appendChild(opt);
+  });
+  selD.disabled = false;
+}
+
+function actualizarSucursales() {
+  const estado = document.getElementById('fEstado').value;
+  const distribuidor = document.getElementById('fDistribuidor').value;
+  const selS = document.getElementById('fSucursal');
+
+  selS.innerHTML = '<option value="">— Selecciona una sucursal —</option>';
+  document.getElementById('fZona').textContent = '—';
+
+  if (!distribuidor) { selS.disabled = true; return; }
+
+  const sucursales = catalogoData
+    .filter(r => r.Estado === estado && r.Distribuidor === distribuidor)
+    .map(r => r.Sucursal).filter(Boolean).sort();
+
+  sucursales.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s; opt.textContent = s;
+    selS.appendChild(opt);
+  });
+  selS.disabled = false;
+}
+
+function actualizarZona() {
+  const sucursal = document.getElementById('fSucursal').value;
+  if (!sucursal) { document.getElementById('fZona').textContent = '—'; return; }
+  const row = catalogoData.find(r => r.Sucursal === sucursal);
+  document.getElementById('fZona').textContent = row ? (row.Zona || '—') : '—';
+}
+
+// ════════════════════════════════════════
+// TIPO VISITA
+// ════════════════════════════════════════
+function seleccionarTipo(tipo) {
+  tipoVisitaActual = tipo;
+  const gastos = document.getElementById('seccionGastos');
+  const btnP = document.getElementById('btnPresencial');
+  const btnV = document.getElementById('btnVirtual');
+
+  if (tipo === 'Presencial') {
+    btnP.className = 'tipo-btn activo-presencial';
+    btnV.className = 'tipo-btn';
+    gastos.classList.remove('oculto');
+    gastos.style.maxHeight = '800px';
+    gastos.style.opacity = '1';
+  } else {
+    btnV.className = 'tipo-btn activo-virtual';
+    btnP.className = 'tipo-btn';
+    gastos.classList.add('oculto');
+  }
+}
+
+// ════════════════════════════════════════
+// VISITAS
+// ════════════════════════════════════════
+async function cargarVisitas() {
+  if (!usuarioActual) return;
+  try {
+    const res = await llamarAPI({ action: 'getVisitas', instructor: usuarioActual.nombre });
+    const visitas = res.visitas || [];
+    renderizarVisitas(visitas);
+  } catch (err) {
+    console.error('Error cargando visitas', err);
+  }
+}
+
+function renderizarVisitas(visitas) {
+  const cont = document.getElementById('listaVisitas');
+  if (!visitas.length) {
+    cont.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">📭</div>
+        <h3>Sin visitas registradas</h3>
+        <p>Tus visitas aparecerán aquí una vez que las registres.</p>
+      </div>`;
+    return;
+  }
+
+  cont.innerHTML = visitas.reverse().map(v => `
+    <div class="visita-card ${v.Tipo_Visita === 'Virtual' ? 'virtual' : ''}">
+      <div class="visita-sucursal">${v.Sucursal || '—'}</div>
+      <div class="visita-meta">
+        <span class="badge ${v.Tipo_Visita === 'Presencial' ? 'badge-presencial' : 'badge-virtual'}">
+          ${v.Tipo_Visita === 'Presencial' ? '🚗' : '💻'} ${v.Tipo_Visita}
+        </span>
+        <span class="badge badge-fecha">📅 ${v.Fecha_Inicio || '—'}</span>
+        <span class="badge badge-estado">📍 ${v.Estado || '—'}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ════════════════════════════════════════
+// GUARDAR VISITA
+// ════════════════════════════════════════
+async function guardarVisita() {
+  const fechaInicio = document.getElementById('fFechaInicio').value;
+  const fechaTermino = document.getElementById('fFechaTermino').value;
+  const estado = document.getElementById('fEstado').value;
+  const distribuidor = document.getElementById('fDistribuidor').value;
+  const sucursal = document.getElementById('fSucursal').value;
+  const personal = document.getElementById('fPersonal').value;
+
+  if (!fechaInicio || !fechaTermino || !estado || !distribuidor || !sucursal || !personal) {
+    mostrarToast('Completa todos los campos obligatorios', 'error');
+    return;
+  }
+
+  const zona = document.getElementById('fZona').textContent;
+
+  const datos = {
+    instructor: usuarioActual.nombre,
+    fecha_inicio: fechaInicio,
+    fecha_termino: fechaTermino,
+    tipo_visita: tipoVisitaActual,
+    zona: zona,
+    estado: estado,
+    distribuidor: distribuidor,
+    sucursal: sucursal,
+    total_personal: parseInt(personal) || 0,
+    comida: tipoVisitaActual === 'Presencial' ? parseFloat(document.getElementById('fComida').value) || 0 : 0,
+    gasolina: tipoVisitaActual === 'Presencial' ? parseFloat(document.getElementById('fGasolina').value) || 0 : 0,
+    casetas: tipoVisitaActual === 'Presencial' ? parseFloat(document.getElementById('fCasetas').value) || 0 : 0,
+    vuelos: tipoVisitaActual === 'Presencial' ? parseFloat(document.getElementById('fVuelos').value) || 0 : 0,
+    hospedaje: tipoVisitaActual === 'Presencial' ? parseFloat(document.getElementById('fHospedaje').value) || 0 : 0,
+    no_noches: tipoVisitaActual === 'Presencial' ? parseInt(document.getElementById('fNoches').value) || 0 : 0,
+    comentarios: document.getElementById('fComentarios').value
+  };
+
+  mostrarLoading('Guardando visita...');
+  try {
+    const res = await llamarAPIPost(datos);
+    if (res.success) {
+      document.getElementById('confirmacionId').textContent = res.id;
+      mostrarPantalla('pantallaConfirmacion');
+    } else {
+      mostrarToast('Error al guardar. Intenta de nuevo.', 'error');
+    }
+  } catch (err) {
+    mostrarToast('Error de conexión. Intenta de nuevo.', 'error');
+  }
+  ocultarLoading();
+}
+
+// ════════════════════════════════════════
+// RESET FORMULARIO
+// ════════════════════════════════════════
+function resetFormulario() {
+  document.getElementById('fFechaInicio').value = '';
+  document.getElementById('fFechaTermino').value = '';
+  document.getElementById('fEstado').value = '';
+  document.getElementById('fDistribuidor').innerHTML = '<option value="">— Selecciona primero el estado —</option>';
+  document.getElementById('fDistribuidor').disabled = true;
+  document.getElementById('fSucursal').innerHTML = '<option value="">— Selecciona primero el distribuidor —</option>';
+  document.getElementById('fSucursal').disabled = true;
+  document.getElementById('fZona').textContent = '—';
+  document.getElementById('fPersonal').value = '';
+  document.getElementById('fComida').value = '';
+  document.getElementById('fGasolina').value = '';
+  document.getElementById('fCasetas').value = '';
+  document.getElementById('fVuelos').value = '';
+  document.getElementById('fHospedaje').value = '';
+  document.getElementById('fNoches').value = '';
+  document.getElementById('fComentarios').value = '';
+  seleccionarTipo('Presencial');
+  // Fecha de hoy por defecto
+  const hoy = new Date().toISOString().split('T')[0];
+  document.getElementById('fFechaInicio').value = hoy;
+  document.getElementById('fFechaTermino').value = hoy;
+}
+</script>
+</body>
+</html>
