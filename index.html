@@ -7,11 +7,11 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --azul: #003366;
-    --rojo-medio: #c80b1ecc;
-    --azul-claro: #E8F0FA;
     --rojo: #C80B1F;
+    --rojo-medio: #c80b1ecc;
+    --rojo-claro: #FEE8EA;
     --verde: #1A6B2E;
+    --azul: #1a56db;
     --gris: #F4F6F9;
     --gris-borde: #DDE3ED;
     --texto: #1A2233;
@@ -21,341 +21,149 @@
     --radio: 14px;
     --radio-sm: 8px;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--gris);
-    color: var(--texto);
-    min-height: 100vh;
-    max-width: 480px;
-    margin: 0 auto;
-  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--gris); color: var(--texto); min-height: 100vh; max-width: 480px; margin: 0 auto; }
 
   .pantalla { display: none; flex-direction: column; min-height: 100vh; }
   .pantalla.activa { display: flex; }
 
-  .header {
-    background: var(--rojo);
-    color: white;
-    padding: 18px 20px 16px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    box-shadow: 0 2px 12px rgba(0,51,102,0.18);
-  }
-  .header-logo {
-    width: 36px; height: 36px;
-    background: rgba(255,255,255,0.15);
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px; flex-shrink: 0;
-  }
+  .header { background: var(--rojo); color: white; padding: 18px 20px 16px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 10; box-shadow: 0 2px 12px rgba(200,11,31,0.25); }
+  .header-logo { width: 36px; height: 36px; background: rgba(255,255,255,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
   .header-titulo { font-size: 16px; font-weight: 700; line-height: 1.2; }
-  .header-subtitulo { font-size: 11px; opacity: 0.75; font-weight: 400; }
-  .header-back {
-    background: none; border: none; color: white;
-    font-size: 22px; cursor: pointer; padding: 4px;
-    margin-right: 4px; flex-shrink: 0;
-  }
+  .header-subtitulo { font-size: 11px; opacity: 0.75; }
+  .header-back { background: none; border: none; color: white; font-size: 22px; cursor: pointer; padding: 4px; margin-right: 4px; flex-shrink: 0; }
 
   .contenido { flex: 1; padding: 20px 16px; overflow-y: auto; }
 
-  .login-hero {
-    text-align: center;
-    padding: 32px 20px 28px;
-    background: linear-gradient(145deg, var(--rojo) 0%, var(--rojo-medio) 100%);
-    color: white;
-  }
-  .login-icon {
-    width: 72px; height: 72px;
-    background: rgba(255,255,255,0.15);
-    border-radius: 20px;
-    margin: 0 auto 16px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 36px;
-  }
+  .login-hero { text-align: center; padding: 32px 20px 28px; background: linear-gradient(145deg, var(--rojo) 0%, var(--rojo-medio) 100%); color: white; }
+  .login-icon { width: 72px; height: 72px; background: rgba(255,255,255,0.15); border-radius: 20px; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 36px; }
   .login-hero h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
   .login-hero p { font-size: 13px; opacity: 0.8; }
 
-  .card {
-    background: var(--blanco);
-    border-radius: var(--radio);
-    padding: 20px;
-    box-shadow: var(--sombra);
-    margin-bottom: 16px;
-  }
-  .card-titulo {
-    font-size: 13px; font-weight: 600;
-    color: var(--rojo);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    margin-bottom: 16px;
-    display: flex; align-items: center; gap: 8px;
-  }
+  .card { background: var(--blanco); border-radius: var(--radio); padding: 20px; box-shadow: var(--sombra); margin-bottom: 16px; }
+  .card-titulo { font-size: 13px; font-weight: 600; color: var(--rojo); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
   .card-titulo span { font-size: 16px; }
 
   .campo { margin-bottom: 16px; }
   .campo:last-child { margin-bottom: 0; }
-  .campo label {
-    display: block;
-    font-size: 12px; font-weight: 600;
-    color: var(--texto-suave);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 6px;
-  }
+  .campo label { display: block; font-size: 12px; font-weight: 600; color: var(--texto-suave); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
   .campo label .req { color: var(--rojo); margin-left: 2px; }
 
-  input[type="text"],
-  input[type="email"],
-  input[type="password"],
-  input[type="number"],
-  input[type="date"],
-  select,
-  textarea {
-    width: 100%;
-    padding: 12px 14px;
-    border: 1.5px solid var(--gris-borde);
-    border-radius: var(--radio-sm);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    color: var(--texto);
-    background: var(--blanco);
-    transition: border-color 0.2s, box-shadow 0.2s;
-    appearance: none;
-    -webkit-appearance: none;
+  input[type="text"], input[type="email"], input[type="password"], input[type="number"], input[type="date"], select, textarea {
+    width: 100%; padding: 12px 14px; border: 1.5px solid var(--gris-borde); border-radius: var(--radio-sm);
+    font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--texto); background: var(--blanco);
+    transition: border-color 0.2s, box-shadow 0.2s; appearance: none; -webkit-appearance: none;
   }
-  input:focus, select:focus, textarea:focus {
-    outline: none;
-    border-color: var(--rojo);
-    box-shadow: 0 0 0 3px rgba(200,11,31,0.10);
-  }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--rojo); box-shadow: 0 0 0 3px rgba(200,11,31,0.10); }
   input[type="password"] { letter-spacing: 0.15em; }
   textarea { resize: none; min-height: 90px; }
   select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7A99' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 38px; }
   select:disabled { background-color: var(--gris); color: var(--texto-suave); }
 
   .campo-fila { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .campo-fila-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
 
-  .btn {
-    width: 100%; padding: 15px;
-    border: none; border-radius: var(--radio-sm);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 16px; font-weight: 600;
-    cursor: pointer;
-    transition: transform 0.1s, box-shadow 0.2s, opacity 0.2s;
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-  }
+  .btn { width: 100%; padding: 15px; border: none; border-radius: var(--radio-sm); font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.1s, box-shadow 0.2s, opacity 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
   .btn:active { transform: scale(0.98); }
-  .btn-primary {
-    background: linear-gradient(135deg, var(--rojo) 0%, var(--rojo-medio) 100%);
-    color: white;
-    box-shadow: 0 4px 16px rgba(200,11,31,0.25);
-  }
-  .btn-primary:hover { box-shadow: 0 6px 20px rgba(200,11,31,0.35); }
-  .btn-success {
-    background: linear-gradient(135deg, #1A6B2E 0%, #27AE60 100%);
-    color: white;
-    box-shadow: 0 4px 16px rgba(26,107,46,0.25);
-  }
-  .btn-outline {
-    background: transparent;
-    color: var(--texto-suave);
-    border: 1.5px solid var(--gris-borde);
-  }
-  .btn-danger-outline {
-    background: transparent;
-    color: var(--rojo);
-    border: 1.5px solid rgba(200,11,31,0.3);
-    font-size: 14px; padding: 11px;
-  }
+  .btn-primary { background: linear-gradient(135deg, var(--rojo) 0%, var(--rojo-medio) 100%); color: white; box-shadow: 0 4px 16px rgba(200,11,31,0.25); }
+  .btn-success { background: linear-gradient(135deg, #1A6B2E 0%, #27AE60 100%); color: white; box-shadow: 0 4px 16px rgba(26,107,46,0.25); }
+  .btn-outline { background: transparent; color: var(--texto-suave); border: 1.5px solid var(--gris-borde); }
+  .btn-danger-outline { background: transparent; color: var(--rojo); border: 1.5px solid rgba(200,11,31,0.3); font-size: 14px; padding: 11px; }
+  .btn-naranja { background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%); color: white; box-shadow: 0 4px 16px rgba(217,119,6,0.25); }
   .btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-  .bienvenida {
-    background: linear-gradient(135deg, var(--rojo) 0%, var(--rojo-medio) 100%);
-    color: white;
-    border-radius: var(--radio);
-    padding: 20px;
-    margin-bottom: 20px;
-    display: flex; align-items: center; gap: 14px;
-  }
-  .bienvenida-avatar {
-    width: 48px; height: 48px; flex-shrink: 0;
-    background: rgba(255,255,255,0.2);
-    border-radius: 14px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 24px;
-  }
+  .bienvenida { background: linear-gradient(135deg, var(--rojo) 0%, var(--rojo-medio) 100%); color: white; border-radius: var(--radio); padding: 20px; margin-bottom: 16px; display: flex; align-items: center; gap: 14px; }
+  .bienvenida-avatar { width: 48px; height: 48px; flex-shrink: 0; background: rgba(255,255,255,0.2); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
   .bienvenida-nombre { font-size: 17px; font-weight: 700; }
   .bienvenida-sub { font-size: 12px; opacity: 0.8; margin-top: 2px; }
 
-  .visita-card {
-    background: var(--blanco);
-    border-radius: var(--radio);
-    padding: 16px;
-    margin-bottom: 12px;
-    box-shadow: var(--sombra);
-    border-left: 4px solid var(--rojo);
-    transition: transform 0.15s, box-shadow 0.15s;
-  }
-  .visita-card:active { transform: scale(0.99); }
+  .acciones-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+  .accion-btn { background: var(--blanco); border-radius: var(--radio); padding: 16px; box-shadow: var(--sombra); border: none; cursor: pointer; text-align: center; transition: transform 0.15s; font-family: 'DM Sans', sans-serif; }
+  .accion-btn:active { transform: scale(0.97); }
+  .accion-icon { font-size: 28px; margin-bottom: 8px; }
+  .accion-label { font-size: 13px; font-weight: 600; color: var(--texto); }
+  .accion-sub { font-size: 11px; color: var(--texto-suave); margin-top: 2px; }
+
+  .visita-card { background: var(--blanco); border-radius: var(--radio); padding: 16px; margin-bottom: 12px; box-shadow: var(--sombra); border-left: 4px solid var(--rojo); transition: transform 0.15s; }
   .visita-card.virtual { border-left-color: var(--texto-suave); }
   .visita-sucursal { font-size: 15px; font-weight: 600; color: var(--texto); margin-bottom: 6px; }
   .visita-meta { display: flex; gap: 8px; flex-wrap: wrap; }
-  .badge {
-    font-size: 11px; font-weight: 600;
-    padding: 3px 10px; border-radius: 20px;
-    display: inline-flex; align-items: center; gap: 4px;
-  }
+  .badge { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; display: inline-flex; align-items: center; gap: 4px; }
   .badge-presencial { background: #E8F5E9; color: #1A6B2E; }
   .badge-virtual { background: #F0F4FF; color: #3B5BDB; }
-  .badge-fecha { background: #FEE8EA; color: var(--rojo); }
+  .badge-fecha { background: var(--rojo-claro); color: var(--rojo); }
   .badge-estado { background: var(--gris); color: var(--texto-suave); }
+  .badge-km { background: #FEF3C7; color: #92400E; }
 
-  .empty-state {
-    text-align: center; padding: 48px 20px;
-    color: var(--texto-suave);
-  }
+  .empty-state { text-align: center; padding: 48px 20px; color: var(--texto-suave); }
   .empty-icon { font-size: 48px; margin-bottom: 12px; }
   .empty-state h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; color: var(--texto); }
   .empty-state p { font-size: 14px; line-height: 1.5; }
 
-  .seccion-gastos {
-    transition: all 0.3s ease;
-    overflow: hidden;
-  }
-  .seccion-gastos.oculto {
-    max-height: 0 !important;
-    opacity: 0;
-    margin: 0;
-    padding: 0;
-  }
+  .seccion-gastos { transition: all 0.3s ease; overflow: hidden; }
+  .seccion-gastos.oculto { max-height: 0 !important; opacity: 0; margin: 0; padding: 0; }
 
-  .tipo-toggle {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 8px; margin-top: 4px;
-  }
-  .tipo-btn {
-    padding: 12px;
-    border: 2px solid var(--gris-borde);
-    border-radius: var(--radio-sm);
-    background: var(--blanco);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px; font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-align: center;
-    color: var(--texto-suave);
-  }
-  .tipo-btn.activo-presencial {
-    border-color: var(--verde);
-    background: #E8F5E9;
-    color: var(--verde);
-  }
-  .tipo-btn.activo-virtual {
-    border-color: #3B5BDB;
-    background: #F0F4FF;
-    color: #3B5BDB;
-  }
+  .tipo-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
+  .tipo-btn { padding: 12px; border: 2px solid var(--gris-borde); border-radius: var(--radio-sm); background: var(--blanco); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; text-align: center; color: var(--texto-suave); }
+  .tipo-btn.activo-presencial { border-color: var(--verde); background: #E8F5E9; color: var(--verde); }
+  .tipo-btn.activo-virtual { border-color: #3B5BDB; background: #F0F4FF; color: #3B5BDB; }
 
-  .zona-auto {
-    background: #FEE8EA;
-    border: 1.5px solid var(--gris-borde);
-    border-radius: var(--radio-sm);
-    padding: 12px 14px;
-    font-size: 15px;
-    color: var(--rojo);
-    font-weight: 500;
-    min-height: 46px;
-    display: flex; align-items: center;
-  }
+  .zona-auto { background: var(--rojo-claro); border: 1.5px solid var(--gris-borde); border-radius: var(--radio-sm); padding: 12px 14px; font-size: 15px; color: var(--rojo); font-weight: 500; min-height: 46px; display: flex; align-items: center; }
+  .km-auto { background: #FEF3C7; border: 1.5px solid #FCD34D; border-radius: var(--radio-sm); padding: 12px 14px; font-size: 14px; color: #92400E; font-weight: 600; min-height: 46px; display: flex; align-items: center; gap: 8px; }
 
-  /* TOTAL GASTOS */
-  .total-gastos-display {
-    background: linear-gradient(135deg, var(--rojo) 0%, var(--rojo-medio) 100%);
-    border-radius: var(--radio-sm);
-    padding: 14px 16px;
-    display: flex; align-items: center; justify-content: space-between;
-    margin-top: 8px;
-    color: white;
-  }
+  .total-gastos-display { background: linear-gradient(135deg, var(--rojo) 0%, var(--rojo-medio) 100%); border-radius: var(--radio-sm); padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; margin-top: 8px; color: white; }
   .total-gastos-label { font-size: 13px; font-weight: 600; opacity: 0.9; }
   .total-gastos-monto { font-family: 'DM Mono', monospace; font-size: 20px; font-weight: 500; }
 
-  .confirmacion {
-    flex: 1;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    padding: 40px 24px; text-align: center;
-  }
-  .confirmacion-icon {
-    width: 90px; height: 90px;
-    background: linear-gradient(135deg, #1A6B2E, #27AE60);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 42px; margin-bottom: 24px;
-    box-shadow: 0 8px 32px rgba(26,107,46,0.25);
-    animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  }
-  @keyframes pop {
-    0% { transform: scale(0); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
-  }
-  .confirmacion h2 { font-size: 24px; font-weight: 700; margin-bottom: 10px; color: var(--texto); }
-  .confirmacion p { font-size: 15px; color: var(--texto-suave); line-height: 1.6; margin-bottom: 8px; }
-  .confirmacion-id {
-    font-family: 'DM Mono', monospace;
-    font-size: 13px;
-    background: var(--gris);
-    padding: 8px 16px;
-    border-radius: 8px;
-    color: var(--rojo);
-    margin: 12px 0 28px;
-  }
+  .ruta-punto { background: var(--blanco); border-radius: var(--radio); padding: 14px 16px; margin-bottom: 10px; box-shadow: var(--sombra); display: flex; align-items: center; gap: 14px; position: relative; }
+  .ruta-punto::after { content: ''; position: absolute; left: 34px; top: 100%; width: 2px; height: 10px; background: var(--gris-borde); }
+  .ruta-punto:last-child::after { display: none; }
+  .ruta-icono { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .ruta-icono.salida { background: #FEF3C7; }
+  .ruta-icono.visita { background: var(--rojo-claro); }
+  .ruta-icono.regreso { background: #E8F5E9; }
+  .ruta-desc { font-size: 14px; font-weight: 600; color: var(--texto); }
+  .ruta-km { font-size: 12px; color: var(--texto-suave); margin-top: 2px; font-family: 'DM Mono', monospace; }
 
-  .toast {
-    position: fixed; bottom: 20px; left: 50%;
-    transform: translateX(-50%) translateY(80px);
-    background: var(--texto);
-    color: white;
-    padding: 12px 20px;
-    border-radius: 10px;
-    font-size: 14px; font-weight: 500;
-    z-index: 1000;
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    max-width: 340px; text-align: center;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-  }
+  .instructor-card { background: var(--blanco); border-radius: var(--radio); padding: 16px; margin-bottom: 12px; box-shadow: var(--sombra); display: flex; align-items: center; gap: 14px; cursor: pointer; transition: transform 0.15s; border-left: 4px solid var(--azul); }
+  .instructor-card:active { transform: scale(0.98); }
+  .instructor-avatar { width: 44px; height: 44px; background: #EFF6FF; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+  .instructor-nombre { font-size: 15px; font-weight: 600; }
+  .instructor-sub { font-size: 12px; color: var(--texto-suave); margin-top: 2px; }
+
+  #mapa { width: 100%; height: 300px; background: var(--gris); display: flex; align-items: center; justify-content: center; border-radius: var(--radio); overflow: hidden; margin-bottom: 16px; }
+  #mapa iframe { border-radius: var(--radio); }
+
+  .resumen-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .resumen-item { text-align: center; padding: 14px 10px; background: var(--gris); border-radius: var(--radio-sm); }
+  .resumen-item.rojo { background: var(--rojo-claro); }
+  .resumen-label { font-size: 11px; color: var(--texto-suave); font-weight: 600; text-transform: uppercase; margin-bottom: 4px; }
+  .resumen-item.rojo .resumen-label { color: var(--rojo); }
+  .resumen-valor { font-size: 20px; font-weight: 700; font-family: 'DM Mono', monospace; }
+  .resumen-item.rojo .resumen-valor { color: var(--rojo); }
+
+  .confirmacion { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 24px; text-align: center; }
+  .confirmacion-icon { width: 90px; height: 90px; background: linear-gradient(135deg, #1A6B2E, #27AE60); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 42px; margin-bottom: 24px; box-shadow: 0 8px 32px rgba(26,107,46,0.25); animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+  @keyframes pop { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+  .confirmacion h2 { font-size: 24px; font-weight: 700; margin-bottom: 10px; }
+  .confirmacion p { font-size: 15px; color: var(--texto-suave); line-height: 1.6; margin-bottom: 8px; }
+  .confirmacion-id { font-family: 'DM Mono', monospace; font-size: 13px; background: var(--gris); padding: 8px 16px; border-radius: 8px; color: var(--rojo); margin: 12px 0 28px; }
+
+  .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--texto); color: white; padding: 12px 20px; border-radius: 10px; font-size: 14px; font-weight: 500; z-index: 1000; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); max-width: 340px; text-align: center; box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
   .toast.visible { transform: translateX(-50%) translateY(0); }
   .toast.error { background: var(--rojo); }
   .toast.success { background: var(--verde); }
 
-  .loading-overlay {
-    position: fixed; inset: 0;
-    background: rgba(255,255,255,0.85);
-    display: none; align-items: center; justify-content: center;
-    flex-direction: column; gap: 16px;
-    z-index: 100;
-  }
+  .loading-overlay { position: fixed; inset: 0; background: rgba(255,255,255,0.85); display: none; align-items: center; justify-content: center; flex-direction: column; gap: 16px; z-index: 100; }
   .loading-overlay.visible { display: flex; }
-  .spinner {
-    width: 40px; height: 40px;
-    border: 3px solid var(--gris-borde);
-    border-top-color: var(--rojo);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-  }
+  .spinner { width: 40px; height: 40px; border: 3px solid var(--gris-borde); border-top-color: var(--rojo); border-radius: 50%; animation: spin 0.8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .loading-texto { font-size: 14px; color: var(--texto-suave); font-weight: 500; }
 
   .divider { height: 1px; background: var(--gris-borde); margin: 16px 0; }
   .mt-12 { margin-top: 12px; }
   .mt-16 { margin-top: 16px; }
+  .seccion-titulo { font-size: 14px; font-weight: 700; color: var(--texto); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
 </style>
 </head>
 <body>
@@ -364,7 +172,6 @@
   <div class="spinner"></div>
   <div class="loading-texto" id="loadingTexto">Cargando...</div>
 </div>
-
 <div class="toast" id="toast"></div>
 
 <!-- LOGIN -->
@@ -372,7 +179,7 @@
   <div class="login-hero">
     <div class="login-icon">🏢</div>
     <h1>Instituto de Capacitación Helvex</h1>
-    <p>Registro de Visitas de Capacitación - Oficina Puebla</p>
+    <p>Registro de Visitas de Capacitación</p>
   </div>
   <div class="contenido">
     <div class="card">
@@ -386,15 +193,13 @@
         <input type="password" id="loginPassword" placeholder="••••••••">
       </div>
       <div class="mt-16">
-        <button class="btn btn-primary" onclick="iniciarSesion()">
-          <span>Entrar</span> →
-        </button>
+        <button class="btn btn-primary" onclick="iniciarSesion()"><span>Entrar</span> →</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- INICIO -->
+<!-- INICIO INSTRUCTOR -->
 <div class="pantalla" id="pantallaInicio">
   <div class="header">
     <div class="header-logo">📋</div>
@@ -408,12 +213,82 @@
       <div class="bienvenida-avatar">👤</div>
       <div>
         <div class="bienvenida-nombre" id="nombreBienvenida">—</div>
-        <div class="bienvenida-sub">Mis visitas registradas</div>
+        <div class="bienvenida-sub">¿Qué vas a registrar hoy?</div>
       </div>
     </div>
-    <button class="btn btn-primary mt-12" onclick="irAFormulario()" style="margin-bottom:20px">
-      + Nueva Visita
-    </button>
+    <div class="acciones-grid">
+      <button class="accion-btn" onclick="irARuta('salida')">
+        <div class="accion-icon">🚗</div>
+        <div class="accion-label">Salida</div>
+        <div class="accion-sub">Inicio de ruta</div>
+      </button>
+      <button class="accion-btn" onclick="irAFormulario()">
+        <div class="accion-icon">📍</div>
+        <div class="accion-label">Nueva Visita</div>
+        <div class="accion-sub">Registrar sucursal</div>
+      </button>
+      <button class="accion-btn" onclick="irARuta('regreso')">
+        <div class="accion-icon">🏠</div>
+        <div class="accion-label">Regreso</div>
+        <div class="accion-sub">Fin de ruta</div>
+      </button>
+      <button class="accion-btn" onclick="irAMisVisitas()">
+        <div class="accion-icon">📊</div>
+        <div class="accion-label">Mis Visitas</div>
+        <div class="accion-sub">Ver historial</div>
+      </button>
+    </div>
+    <div class="divider"></div>
+    <button class="btn btn-danger-outline" onclick="cerrarSesion()">Cerrar Sesión</button>
+  </div>
+</div>
+
+<!-- REGISTRO RUTA (Salida/Regreso) -->
+<div class="pantalla" id="pantallaRuta">
+  <div class="header">
+    <button class="header-back" onclick="mostrarPantalla('pantallaInicio')">‹</button>
+    <div class="header-logo" id="rutaHeaderIcon">🚗</div>
+    <div>
+      <div class="header-titulo" id="rutaHeaderTitulo">Registrar Salida</div>
+      <div class="header-subtitulo">Kilometraje del odómetro</div>
+    </div>
+  </div>
+  <div class="contenido">
+    <div class="card">
+      <div class="card-titulo"><span id="rutaCardIcon">🚗</span> <span id="rutaCardTitulo">Salida de Oficina</span></div>
+      <div class="campo">
+        <label>Fecha <span class="req">*</span></label>
+        <input type="date" id="rutaFecha">
+      </div>
+      <div class="campo">
+        <label>KM Odómetro actual <span class="req">*</span></label>
+        <input type="number" id="rutaKM" placeholder="Ej. 250000" min="0" oninput="calcularKMRuta()">
+      </div>
+      <div class="campo">
+        <label>KM Recorridos</label>
+        <div class="km-auto" id="rutaKMRecorridos">🔄 Se calculará automáticamente</div>
+      </div>
+      <div class="campo">
+        <label>Descripción</label>
+        <input type="text" id="rutaDescripcion" placeholder="Ej. Oficina Puebla">
+      </div>
+    </div>
+    <button class="btn btn-naranja mt-12" onclick="guardarRuta()">✓ Registrar</button>
+    <button class="btn btn-outline mt-12" onclick="mostrarPantalla('pantallaInicio')" style="margin-bottom:32px">Cancelar</button>
+  </div>
+</div>
+
+<!-- MIS VISITAS -->
+<div class="pantalla" id="pantallaMisVisitas">
+  <div class="header">
+    <button class="header-back" onclick="mostrarPantalla('pantallaInicio')">‹</button>
+    <div class="header-logo">📊</div>
+    <div>
+      <div class="header-titulo">Mis Visitas</div>
+      <div class="header-subtitulo">Historial de registros</div>
+    </div>
+  </div>
+  <div class="contenido">
     <div id="listaVisitas">
       <div class="empty-state">
         <div class="empty-icon">📭</div>
@@ -421,15 +296,13 @@
         <p>Tus visitas aparecerán aquí una vez que las registres.</p>
       </div>
     </div>
-    <div class="divider"></div>
-    <button class="btn btn-danger-outline" onclick="cerrarSesion()">Cerrar Sesión</button>
   </div>
 </div>
 
-<!-- FORMULARIO -->
+<!-- FORMULARIO NUEVA VISITA -->
 <div class="pantalla" id="pantallaFormulario">
   <div class="header">
-    <button class="header-back" onclick="irAInicio()">‹</button>
+    <button class="header-back" onclick="mostrarPantalla('pantallaInicio')">‹</button>
     <div class="header-logo">✏️</div>
     <div>
       <div class="header-titulo">Nueva Visita</div>
@@ -438,7 +311,6 @@
   </div>
   <div class="contenido">
 
-    <!-- INSTRUCTOR -->
     <div class="card">
       <div class="card-titulo"><span>👤</span> Datos del Instructor</div>
       <div class="campo">
@@ -464,7 +336,6 @@
       </div>
     </div>
 
-    <!-- UBICACIÓN -->
     <div class="card">
       <div class="card-titulo"><span>📍</span> Ubicación de la Visita</div>
       <div class="campo">
@@ -491,7 +362,18 @@
       </div>
     </div>
 
-    <!-- PERSONAL -->
+    <div class="card" id="cardKilometraje">
+      <div class="card-titulo"><span>🚗</span> Kilometraje</div>
+      <div class="campo">
+        <label>KM Odómetro al llegar <span class="req">*</span></label>
+        <input type="number" id="fKMOdometro" placeholder="Ej. 250180" min="0" oninput="calcularKMRecorridos()">
+      </div>
+      <div class="campo">
+        <label>KM Recorridos (automático)</label>
+        <div class="km-auto" id="fKMRecorridos">🔄 Ingresa el odómetro para calcular</div>
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-titulo"><span>👥</span> Personal Capacitado</div>
       <div class="campo">
@@ -500,43 +382,56 @@
       </div>
     </div>
 
-    <!-- GASTOS -->
     <div class="seccion-gastos" id="seccionGastos">
       <div class="card">
-        <div class="card-titulo"><span>💰</span> Gastos de la Visita</div>
-        <div class="campo-fila">
+        <div class="card-titulo"><span>🍽️</span> Comidas</div>
+        <div class="campo-fila-3">
+          <div class="campo">
+            <label>Desayuno $</label>
+            <input type="number" id="fDesayuno" placeholder="0.00" min="0" step="0.01" oninput="calcularTotal()">
+          </div>
           <div class="campo">
             <label>Comida $</label>
             <input type="number" id="fComida" placeholder="0.00" min="0" step="0.01" oninput="calcularTotal()">
           </div>
           <div class="campo">
+            <label>Cena $</label>
+            <input type="number" id="fCena" placeholder="0.00" min="0" step="0.01" oninput="calcularTotal()">
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-titulo"><span>💰</span> Gastos de Transporte y Estadía</div>
+        <div class="campo-fila">
+          <div class="campo">
             <label>Gasolina $</label>
             <input type="number" id="fGasolina" placeholder="0.00" min="0" step="0.01" oninput="calcularTotal()">
           </div>
-        </div>
-        <div class="campo-fila">
           <div class="campo">
             <label>Casetas $</label>
             <input type="number" id="fCasetas" placeholder="0.00" min="0" step="0.01" oninput="calcularTotal()">
           </div>
+        </div>
+        <div class="campo-fila">
           <div class="campo">
             <label>Vuelos $</label>
             <input type="number" id="fVuelos" placeholder="0.00" min="0" step="0.01" oninput="calcularTotal()">
           </div>
-        </div>
-        <div class="campo-fila">
           <div class="campo">
             <label>Hospedaje $</label>
             <input type="number" id="fHospedaje" placeholder="0.00" min="0" step="0.01" oninput="calcularTotal()">
           </div>
+        </div>
+        <div class="campo-fila">
           <div class="campo">
             <label>No. Noches</label>
             <input type="number" id="fNoches" placeholder="0" min="0">
           </div>
-        </div>
-        <div class="campo">
-          <label>Otros Gastos $</label>
-          <input type="number" id="fOtrosGastos" placeholder="0.00" min="0" step="0.01" oninput="calcularTotal()">
+          <div class="campo">
+            <label>Otros Gastos $</label>
+            <input type="number" id="fOtrosGastos" placeholder="0.00" min="0" step="0.01" oninput="calcularTotal()">
+          </div>
         </div>
         <div class="total-gastos-display">
           <span class="total-gastos-label">Total Gastos</span>
@@ -545,7 +440,6 @@
       </div>
     </div>
 
-    <!-- COMENTARIOS -->
     <div class="card">
       <div class="card-titulo"><span>📝</span> Adicional</div>
       <div class="campo">
@@ -555,7 +449,7 @@
     </div>
 
     <button class="btn btn-success mt-12" onclick="guardarVisita()">✓ Guardar Visita</button>
-    <button class="btn btn-outline mt-12" onclick="irAInicio()" style="margin-bottom:32px">Cancelar</button>
+    <button class="btn btn-outline mt-12" onclick="mostrarPantalla('pantallaInicio')" style="margin-bottom:32px">Cancelar</button>
   </div>
 </div>
 
@@ -564,7 +458,7 @@
   <div class="header">
     <div class="header-logo">✅</div>
     <div>
-      <div class="header-titulo">Visita Registrada</div>
+      <div class="header-titulo">Registro Exitoso</div>
       <div class="header-subtitulo">ICH — Registro de Visitas</div>
     </div>
   </div>
@@ -573,7 +467,82 @@
     <h2>¡Registro Exitoso!</h2>
     <p>Tu visita fue guardada correctamente en el sistema.</p>
     <div class="confirmacion-id" id="confirmacionId">ICH-000000</div>
-    <button class="btn btn-primary" style="max-width:280px" onclick="irAInicio()">Ir al Inicio</button>
+    <button class="btn btn-primary" style="max-width:280px" onclick="mostrarPantalla('pantallaInicio')">Ir al Inicio</button>
+  </div>
+</div>
+
+<!-- JEFE — INICIO -->
+<div class="pantalla" id="pantallaJefeInicio">
+  <div class="header">
+    <div class="header-logo">👔</div>
+    <div>
+      <div class="header-titulo">Panel de Supervisión</div>
+      <div class="header-subtitulo">ICH — Vista Gerencial</div>
+    </div>
+  </div>
+  <div class="contenido">
+    <div class="bienvenida">
+      <div class="bienvenida-avatar">👔</div>
+      <div>
+        <div class="bienvenida-nombre" id="nombreJefe">—</div>
+        <div class="bienvenida-sub">Selecciona un instructor para ver su ruta</div>
+      </div>
+    </div>
+    <div class="seccion-titulo">👥 Instructores</div>
+    <div id="listaInstructores">
+      <div class="empty-state">
+        <div class="empty-icon">👥</div>
+        <h3>Cargando instructores...</h3>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <button class="btn btn-danger-outline" onclick="cerrarSesion()">Cerrar Sesión</button>
+  </div>
+</div>
+
+<!-- JEFE — DETALLE INSTRUCTOR -->
+<div class="pantalla" id="pantallaJefeDetalle">
+  <div class="header">
+    <button class="header-back" onclick="mostrarPantalla('pantallaJefeInicio')">‹</button>
+    <div class="header-logo">🗺️</div>
+    <div>
+      <div class="header-titulo" id="jefeDetalleTitulo">Ruta del Instructor</div>
+      <div class="header-subtitulo">Kilometraje y visitas</div>
+    </div>
+  </div>
+  <div class="contenido">
+    <div class="campo" style="margin-bottom:16px;">
+      <label>Filtrar por fecha</label>
+      <input type="date" id="jefeDetalleFecha" onchange="cargarRutaInstructor()">
+    </div>
+
+    <div id="mapa">
+      <div style="text-align:center; padding:40px 20px; color:var(--texto-suave);">
+        <div style="font-size:36px; margin-bottom:12px;">🗺️</div>
+        <div style="font-size:14px;">Selecciona una fecha para ver la ruta</div>
+      </div>
+    </div>
+
+    <div class="resumen-grid" id="resumenKM" style="display:none;">
+      <div class="resumen-item">
+        <div class="resumen-label">KM Iniciales</div>
+        <div class="resumen-valor" id="kmInicial">—</div>
+      </div>
+      <div class="resumen-item rojo">
+        <div class="resumen-label">KM Recorridos</div>
+        <div class="resumen-valor" id="kmTotalRecorridos">—</div>
+      </div>
+    </div>
+
+    <div class="seccion-titulo">📍 Puntos de la Ruta</div>
+    <div id="listaPuntosRuta">
+      <div class="empty-state" style="padding:24px;"><p>Selecciona una fecha para ver los puntos.</p></div>
+    </div>
+
+    <div class="seccion-titulo mt-12">🏢 Visitas del Día</div>
+    <div id="listaVisitasJefe">
+      <div class="empty-state" style="padding:24px;"><p>Selecciona una fecha para ver las visitas.</p></div>
+    </div>
   </div>
 </div>
 
@@ -583,6 +552,10 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbxHwPWl4rklleoIr03BYNk_
 let usuarioActual = null;
 let catalogoData = [];
 let tipoVisitaActual = 'Presencial';
+let tipoRutaActual = 'salida';
+let ultimoKM = 0;
+let instructoresList = [];
+let instructorSeleccionado = null;
 
 function mostrarPantalla(id) {
   document.querySelectorAll('.pantalla').forEach(p => p.classList.remove('activa'));
@@ -590,8 +563,31 @@ function mostrarPantalla(id) {
   window.scrollTo(0, 0);
 }
 
-function irAInicio() { cargarVisitas(); mostrarPantalla('pantallaInicio'); }
 function irAFormulario() { resetFormulario(); mostrarPantalla('pantallaFormulario'); }
+function irAMisVisitas() { cargarVisitas(); mostrarPantalla('pantallaMisVisitas'); }
+
+function irARuta(tipo) {
+  tipoRutaActual = tipo;
+  const hoy = new Date().toISOString().split('T')[0];
+  document.getElementById('rutaFecha').value = hoy;
+  document.getElementById('rutaKM').value = '';
+  document.getElementById('rutaDescripcion').value = tipo === 'salida' ? 'Oficina Puebla' : 'Regreso a Oficina';
+  if (tipo === 'salida') {
+    document.getElementById('rutaHeaderIcon').textContent = '🚗';
+    document.getElementById('rutaHeaderTitulo').textContent = 'Registrar Salida';
+    document.getElementById('rutaCardIcon').textContent = '🚗';
+    document.getElementById('rutaCardTitulo').textContent = 'Salida de Oficina';
+    document.getElementById('rutaKMRecorridos').textContent = '📌 KM iniciales del día';
+  } else {
+    document.getElementById('rutaHeaderIcon').textContent = '🏠';
+    document.getElementById('rutaHeaderTitulo').textContent = 'Registrar Regreso';
+    document.getElementById('rutaCardIcon').textContent = '🏠';
+    document.getElementById('rutaCardTitulo').textContent = 'Regreso a Oficina';
+    document.getElementById('rutaKMRecorridos').textContent = '🔄 Ingresa el odómetro para calcular';
+  }
+  mostrarPantalla('pantallaRuta');
+}
+
 function cerrarSesion() {
   usuarioActual = null;
   mostrarPantalla('pantallaLogin');
@@ -606,8 +602,7 @@ function mostrarLoading(texto = 'Cargando...') {
 function ocultarLoading() { document.getElementById('loading').classList.remove('visible'); }
 function mostrarToast(msg, tipo = '') {
   const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast ' + tipo;
+  t.textContent = msg; t.className = 'toast ' + tipo;
   setTimeout(() => t.classList.add('visible'), 10);
   setTimeout(() => t.classList.remove('visible'), 3500);
 }
@@ -617,11 +612,8 @@ async function llamarAPI(params) {
   const res = await fetch(url);
   return await res.json();
 }
-async function llamarAPIPost(data) {
-  const res = await fetch(API_URL + '?action=saveVisita', {
-    method: 'POST',
-    body: JSON.stringify(data)
-  });
+async function llamarAPIPost(accion, data) {
+  const res = await fetch(API_URL + '?action=' + accion, { method: 'POST', body: JSON.stringify(data) });
   return await res.json();
 }
 
@@ -633,24 +625,24 @@ async function iniciarSesion() {
   try {
     const res = await llamarAPI({ action: 'login', correo, password });
     if (res.success) {
-      usuarioActual = { nombre: res.nombre, correo: res.correo };
-      document.getElementById('nombreBienvenida').textContent = res.nombre;
-      document.getElementById('fInstructor').value = res.nombre;
-      await cargarCatalogo();
-      await cargarVisitas();
-      mostrarPantalla('pantallaInicio');
-    } else {
-      mostrarToast('Credenciales incorrectas. Verifica tu correo y contraseña.', 'error');
-    }
-  } catch (err) {
-    mostrarToast('Error de conexión. Intenta de nuevo.', 'error');
-  }
+      usuarioActual = { nombre: res.nombre, correo: res.correo, rol: res.rol || 'instructor' };
+      if (usuarioActual.rol === 'jefe') {
+        document.getElementById('nombreJefe').textContent = res.nombre;
+        await cargarInstructores();
+        mostrarPantalla('pantallaJefeInicio');
+      } else {
+        document.getElementById('nombreBienvenida').textContent = res.nombre;
+        document.getElementById('fInstructor').value = res.nombre;
+        await cargarCatalogo();
+        await obtenerUltimoKM();
+        mostrarPantalla('pantallaInicio');
+      }
+    } else { mostrarToast('Credenciales incorrectas.', 'error'); }
+  } catch (err) { mostrarToast('Error de conexión.', 'error'); }
   ocultarLoading();
 }
 
-document.getElementById('loginPassword').addEventListener('keypress', e => {
-  if (e.key === 'Enter') iniciarSesion();
-});
+document.getElementById('loginPassword').addEventListener('keypress', e => { if (e.key === 'Enter') iniciarSesion(); });
 
 async function cargarCatalogo() {
   try {
@@ -700,34 +692,140 @@ function actualizarZona() {
   document.getElementById('fZona').textContent = row ? (row.Zona || '—') : '—';
 }
 
-function calcularTotal() {
-  const comida = parseFloat(document.getElementById('fComida').value) || 0;
-  const gasolina = parseFloat(document.getElementById('fGasolina').value) || 0;
-  const casetas = parseFloat(document.getElementById('fCasetas').value) || 0;
-  const vuelos = parseFloat(document.getElementById('fVuelos').value) || 0;
-  const hospedaje = parseFloat(document.getElementById('fHospedaje').value) || 0;
-  const otros = parseFloat(document.getElementById('fOtrosGastos').value) || 0;
-  const total = comida + gasolina + casetas + vuelos + hospedaje + otros;
-  document.getElementById('totalGastosDisplay').textContent = '$' + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  return total;
+async function obtenerUltimoKM() {
+  try {
+    const res = await llamarAPI({ action: 'getUltimoKM', instructor: usuarioActual.nombre });
+    ultimoKM = parseFloat(res.km) || 0;
+  } catch (err) { ultimoKM = 0; }
+}
+
+function calcularKMRuta() {
+  const kmActual = parseFloat(document.getElementById('rutaKM').value) || 0;
+  if (tipoRutaActual === 'salida') {
+    document.getElementById('rutaKMRecorridos').textContent = '📌 KM iniciales del día';
+  } else if (kmActual > 0 && ultimoKM > 0) {
+    const rec = Math.max(0, kmActual - ultimoKM);
+    document.getElementById('rutaKMRecorridos').textContent = '📍 ' + rec.toLocaleString() + ' km recorridos';
+  }
+}
+
+function calcularKMRecorridos() {
+  const kmActual = parseFloat(document.getElementById('fKMOdometro').value) || 0;
+  if (kmActual > 0 && ultimoKM > 0 && kmActual > ultimoKM) {
+    const rec = kmActual - ultimoKM;
+    document.getElementById('fKMRecorridos').textContent = '📍 ' + rec.toLocaleString() + ' km recorridos';
+  } else {
+    document.getElementById('fKMRecorridos').textContent = '🔄 Ingresa el odómetro para calcular';
+  }
 }
 
 function seleccionarTipo(tipo) {
   tipoVisitaActual = tipo;
   const gastos = document.getElementById('seccionGastos');
-  const btnP = document.getElementById('btnPresencial');
-  const btnV = document.getElementById('btnVirtual');
+  const km = document.getElementById('cardKilometraje');
   if (tipo === 'Presencial') {
-    btnP.className = 'tipo-btn activo-presencial';
-    btnV.className = 'tipo-btn';
-    gastos.classList.remove('oculto');
-    gastos.style.maxHeight = '900px';
-    gastos.style.opacity = '1';
+    document.getElementById('btnPresencial').className = 'tipo-btn activo-presencial';
+    document.getElementById('btnVirtual').className = 'tipo-btn';
+    gastos.classList.remove('oculto'); gastos.style.maxHeight = '1200px'; gastos.style.opacity = '1';
+    km.style.display = 'block';
   } else {
-    btnV.className = 'tipo-btn activo-virtual';
-    btnP.className = 'tipo-btn';
+    document.getElementById('btnVirtual').className = 'tipo-btn activo-virtual';
+    document.getElementById('btnPresencial').className = 'tipo-btn';
     gastos.classList.add('oculto');
+    km.style.display = 'none';
   }
+}
+
+function calcularTotal() {
+  const vals = ['fDesayuno','fComida','fCena','fGasolina','fCasetas','fVuelos','fHospedaje','fOtrosGastos'];
+  const total = vals.reduce((sum, id) => sum + (parseFloat(document.getElementById(id).value) || 0), 0);
+  document.getElementById('totalGastosDisplay').textContent = '$' + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return total;
+}
+
+async function guardarRuta() {
+  const fecha = document.getElementById('rutaFecha').value;
+  const km = document.getElementById('rutaKM').value;
+  if (!fecha || !km) { mostrarToast('Completa todos los campos', 'error'); return; }
+  const kmActual = parseFloat(km);
+  const kmRecorridos = tipoRutaActual === 'salida' ? 0 : Math.max(0, kmActual - ultimoKM);
+  const datos = {
+    instructor: usuarioActual.nombre, fecha,
+    tipo_punto: tipoRutaActual === 'salida' ? 'Salida' : 'Regreso',
+    descripcion: document.getElementById('rutaDescripcion').value || (tipoRutaActual === 'salida' ? 'Oficina Puebla' : 'Regreso a Oficina'),
+    km_odometro: kmActual, km_recorridos: kmRecorridos
+  };
+  mostrarLoading('Registrando...');
+  try {
+    const res = await llamarAPIPost('saveRuta', datos);
+    if (res.success) {
+      ultimoKM = kmActual;
+      mostrarToast(tipoRutaActual === 'salida' ? '¡Salida registrada!' : '¡Regreso registrado!', 'success');
+      mostrarPantalla('pantallaInicio');
+    } else { mostrarToast('Error al registrar.', 'error'); }
+  } catch (err) { mostrarToast('Error de conexión.', 'error'); }
+  ocultarLoading();
+}
+
+async function guardarVisita() {
+  const fechaInicio = document.getElementById('fFechaInicio').value;
+  const fechaTermino = document.getElementById('fFechaTermino').value;
+  const estado = document.getElementById('fEstado').value;
+  const distribuidor = document.getElementById('fDistribuidor').value;
+  const sucursal = document.getElementById('fSucursal').value;
+  const personal = document.getElementById('fPersonal').value;
+  if (!fechaInicio || !fechaTermino || !estado || !distribuidor || !sucursal || !personal) {
+    mostrarToast('Completa todos los campos obligatorios', 'error'); return;
+  }
+  const esPresencial = tipoVisitaActual === 'Presencial';
+  const kmOdometro = esPresencial ? parseFloat(document.getElementById('fKMOdometro').value) || 0 : 0;
+  const kmRecorridos = esPresencial && kmOdometro > ultimoKM ? kmOdometro - ultimoKM : 0;
+  const desayuno  = esPresencial ? parseFloat(document.getElementById('fDesayuno').value) || 0 : 0;
+  const comida    = esPresencial ? parseFloat(document.getElementById('fComida').value) || 0 : 0;
+  const cena      = esPresencial ? parseFloat(document.getElementById('fCena').value) || 0 : 0;
+  const gasolina  = esPresencial ? parseFloat(document.getElementById('fGasolina').value) || 0 : 0;
+  const casetas   = esPresencial ? parseFloat(document.getElementById('fCasetas').value) || 0 : 0;
+  const vuelos    = esPresencial ? parseFloat(document.getElementById('fVuelos').value) || 0 : 0;
+  const hospedaje = esPresencial ? parseFloat(document.getElementById('fHospedaje').value) || 0 : 0;
+  const no_noches = esPresencial ? parseInt(document.getElementById('fNoches').value) || 0 : 0;
+  const otros     = esPresencial ? parseFloat(document.getElementById('fOtrosGastos').value) || 0 : 0;
+  const total_gastos = desayuno + comida + cena + gasolina + casetas + vuelos + hospedaje + otros;
+
+  // Guardar en Rutas si es presencial y hay KM
+  if (esPresencial && kmOdometro > 0) {
+    try {
+      await llamarAPIPost('saveRuta', {
+        instructor: usuarioActual.nombre, fecha: fechaInicio,
+        tipo_punto: 'Visita', descripcion: sucursal,
+        km_odometro: kmOdometro, km_recorridos: kmRecorridos
+      });
+      ultimoKM = kmOdometro;
+    } catch (err) { console.error('Error guardando ruta', err); }
+  }
+
+  const datos = {
+    instructor: usuarioActual.nombre,
+    fecha_inicio: fechaInicio, fecha_termino: fechaTermino,
+    tipo_visita: tipoVisitaActual,
+    zona: document.getElementById('fZona').textContent,
+    estado, distribuidor, sucursal,
+    total_personal: parseInt(personal) || 0,
+    desayuno, comida, cena, gasolina, casetas, vuelos, hospedaje, no_noches,
+    otros_gastos: otros, total_gastos,
+    km_odometro: kmOdometro, km_recorridos: kmRecorridos,
+    tipo_registro: 'Visita',
+    comentarios: document.getElementById('fComentarios').value
+  };
+
+  mostrarLoading('Guardando visita...');
+  try {
+    const res = await llamarAPIPost('saveVisita', datos);
+    if (res.success) {
+      document.getElementById('confirmacionId').textContent = res.id;
+      mostrarPantalla('pantallaConfirmacion');
+    } else { mostrarToast('Error al guardar.', 'error'); }
+  } catch (err) { mostrarToast('Error de conexión.', 'error'); }
+  ocultarLoading();
 }
 
 async function cargarVisitas() {
@@ -748,78 +846,140 @@ function renderizarVisitas(visitas) {
     <div class="visita-card ${v.Tipo_Visita === 'Virtual' ? 'virtual' : ''}">
       <div class="visita-sucursal">${v.Sucursal || '—'}</div>
       <div class="visita-meta">
-        <span class="badge ${v.Tipo_Visita === 'Presencial' ? 'badge-presencial' : 'badge-virtual'}">
-          ${v.Tipo_Visita === 'Presencial' ? '🚗' : '💻'} ${v.Tipo_Visita}
-        </span>
+        <span class="badge ${v.Tipo_Visita === 'Presencial' ? 'badge-presencial' : 'badge-virtual'}">${v.Tipo_Visita === 'Presencial' ? '🚗' : '💻'} ${v.Tipo_Visita}</span>
         <span class="badge badge-fecha">📅 ${v.Fecha_Inicio || '—'}</span>
         <span class="badge badge-estado">📍 ${v.Estado || '—'}</span>
+        ${v.KM_Recorridos ? `<span class="badge badge-km">🚗 ${parseInt(v.KM_Recorridos).toLocaleString()} km</span>` : ''}
       </div>
     </div>`).join('');
 }
 
-async function guardarVisita() {
-  const fechaInicio = document.getElementById('fFechaInicio').value;
-  const fechaTermino = document.getElementById('fFechaTermino').value;
-  const estado = document.getElementById('fEstado').value;
-  const distribuidor = document.getElementById('fDistribuidor').value;
-  const sucursal = document.getElementById('fSucursal').value;
-  const personal = document.getElementById('fPersonal').value;
+async function cargarInstructores() {
+  try {
+    const res = await llamarAPI({ action: 'getInstructores' });
+    instructoresList = res.instructores || [];
+    renderizarInstructores();
+  } catch (err) { mostrarToast('Error al cargar instructores', 'error'); }
+}
 
-  if (!fechaInicio || !fechaTermino || !estado || !distribuidor || !sucursal || !personal) {
-    mostrarToast('Completa todos los campos obligatorios', 'error');
+function renderizarInstructores() {
+  const cont = document.getElementById('listaInstructores');
+  if (!instructoresList.length) {
+    cont.innerHTML = `<div class="empty-state"><div class="empty-icon">👥</div><h3>Sin instructores registrados</h3></div>`;
     return;
   }
+  cont.innerHTML = instructoresList.map(inst => `
+    <div class="instructor-card" onclick="verRutaInstructor('${inst.Nombre}')">
+      <div class="instructor-avatar">👤</div>
+      <div style="flex:1;">
+        <div class="instructor-nombre">${inst.Nombre}</div>
+        <div class="instructor-sub">${inst.Correo}</div>
+      </div>
+      <span style="color:var(--gris-borde); font-size:20px;">›</span>
+    </div>`).join('');
+}
 
-  const esPresencial = tipoVisitaActual === 'Presencial';
-  const comida     = esPresencial ? parseFloat(document.getElementById('fComida').value) || 0 : 0;
-  const gasolina   = esPresencial ? parseFloat(document.getElementById('fGasolina').value) || 0 : 0;
-  const casetas    = esPresencial ? parseFloat(document.getElementById('fCasetas').value) || 0 : 0;
-  const vuelos     = esPresencial ? parseFloat(document.getElementById('fVuelos').value) || 0 : 0;
-  const hospedaje  = esPresencial ? parseFloat(document.getElementById('fHospedaje').value) || 0 : 0;
-  const no_noches  = esPresencial ? parseInt(document.getElementById('fNoches').value) || 0 : 0;
-  const otros      = esPresencial ? parseFloat(document.getElementById('fOtrosGastos').value) || 0 : 0;
-  const total_gastos = esPresencial ? comida + gasolina + casetas + vuelos + hospedaje + otros : 0;
+function verRutaInstructor(nombre) {
+  instructorSeleccionado = nombre;
+  document.getElementById('jefeDetalleTitulo').textContent = nombre.split(' ')[0];
+  const hoy = new Date().toISOString().split('T')[0];
+  document.getElementById('jefeDetalleFecha').value = hoy;
+  mostrarPantalla('pantallaJefeDetalle');
+  cargarRutaInstructor();
+}
 
-  const datos = {
-    instructor: usuarioActual.nombre,
-    fecha_inicio: fechaInicio,
-    fecha_termino: fechaTermino,
-    tipo_visita: tipoVisitaActual,
-    zona: document.getElementById('fZona').textContent,
-    estado, distribuidor, sucursal,
-    total_personal: parseInt(personal) || 0,
-    comida, gasolina, casetas, vuelos, hospedaje, no_noches,
-    otros_gastos: otros,
-    total_gastos,
-    comentarios: document.getElementById('fComentarios').value
-  };
-
-  mostrarLoading('Guardando visita...');
+async function cargarRutaInstructor() {
+  const fecha = document.getElementById('jefeDetalleFecha').value;
+  if (!fecha || !instructorSeleccionado) return;
+  mostrarLoading('Cargando ruta...');
   try {
-    const res = await llamarAPIPost(datos);
-    if (res.success) {
-      document.getElementById('confirmacionId').textContent = res.id;
-      mostrarPantalla('pantallaConfirmacion');
+    const [rutaRes, visitasRes] = await Promise.all([
+      llamarAPI({ action: 'getRuta', instructor: instructorSeleccionado, fecha }),
+      llamarAPI({ action: 'getVisitas', instructor: instructorSeleccionado })
+    ]);
+    const puntos = rutaRes.puntos || [];
+    const visitas = (visitasRes.visitas || []).filter(v => v.Fecha_Inicio === fecha);
+    renderizarPuntosRuta(puntos);
+    renderizarVisitasJefe(visitas);
+    renderizarMapa(puntos, visitas);
+    if (puntos.length > 0) {
+      document.getElementById('resumenKM').style.display = 'grid';
+      const kmInicial = parseFloat(puntos[0]?.KM_Odometro) || 0;
+      const kmTotal = puntos.reduce((sum, p) => sum + (parseFloat(p.KM_Recorridos) || 0), 0);
+      document.getElementById('kmInicial').textContent = kmInicial.toLocaleString();
+      document.getElementById('kmTotalRecorridos').textContent = kmTotal.toLocaleString() + ' km';
     } else {
-      mostrarToast('Error al guardar. Intenta de nuevo.', 'error');
+      document.getElementById('resumenKM').style.display = 'none';
     }
-  } catch (err) {
-    mostrarToast('Error de conexión. Intenta de nuevo.', 'error');
-  }
+  } catch (err) { mostrarToast('Error al cargar la ruta', 'error'); }
   ocultarLoading();
 }
 
+function renderizarPuntosRuta(puntos) {
+  const cont = document.getElementById('listaPuntosRuta');
+  if (!puntos.length) {
+    cont.innerHTML = `<div class="empty-state" style="padding:24px;"><p>No hay puntos de ruta para esta fecha.</p></div>`;
+    return;
+  }
+  const config = { 'Salida': { icon: '🚗', clase: 'salida' }, 'Visita': { icon: '📍', clase: 'visita' }, 'Regreso': { icon: '🏠', clase: 'regreso' } };
+  cont.innerHTML = puntos.map(p => {
+    const { icon, clase } = config[p.Tipo_Punto] || { icon: '📍', clase: 'visita' };
+    return `<div class="ruta-punto">
+      <div class="ruta-icono ${clase}">${icon}</div>
+      <div>
+        <div class="ruta-desc">${p.Descripcion || p.Tipo_Punto}</div>
+        <div class="ruta-km">Odómetro: ${parseInt(p.KM_Odometro || 0).toLocaleString()} km · Recorridos: ${parseInt(p.KM_Recorridos || 0).toLocaleString()} km</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderizarVisitasJefe(visitas) {
+  const cont = document.getElementById('listaVisitasJefe');
+  if (!visitas.length) {
+    cont.innerHTML = `<div class="empty-state" style="padding:24px;"><p>No hay visitas para esta fecha.</p></div>`;
+    return;
+  }
+  cont.innerHTML = visitas.map(v => `
+    <div class="visita-card">
+      <div class="visita-sucursal">${v.Sucursal || '—'}</div>
+      <div class="visita-meta">
+        <span class="badge badge-presencial">👥 ${v.Total_Personal_Capacitado || 0} personas</span>
+        <span class="badge badge-fecha">💰 $${parseFloat(v.Total_Gastos || 0).toLocaleString()}</span>
+        ${v.KM_Recorridos ? `<span class="badge badge-km">🚗 ${parseInt(v.KM_Recorridos).toLocaleString()} km</span>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+function renderizarMapa(puntos, visitas) {
+  const mapa = document.getElementById('mapa');
+  const todosLosPuntos = [
+    ...puntos.map(p => encodeURIComponent(p.Descripcion + ', México')),
+    ...visitas.map(v => encodeURIComponent((v.Sucursal || '') + ', ' + (v.Estado || '') + ', México'))
+  ].filter(Boolean);
+
+  if (todosLosPuntos.length >= 2) {
+    const origen = todosLosPuntos[0];
+    const destino = todosLosPuntos[todosLosPuntos.length - 1];
+    const waypoints = todosLosPuntos.slice(1, -1).join('|');
+    const url = `https://www.google.com/maps/embed/v1/directions?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU3s_o&origin=${origen}&destination=${destino}${waypoints ? '&waypoints=' + waypoints : ''}&language=es&mode=driving`;
+    mapa.innerHTML = `<iframe width="100%" height="300" frameborder="0" style="border:0;border-radius:var(--radio);" src="${url}" allowfullscreen></iframe>`;
+  } else {
+    mapa.innerHTML = `<div style="text-align:center; padding:40px 20px; color:var(--texto-suave);"><div style="font-size:36px;margin-bottom:12px;">🗺️</div><div style="font-size:14px;">${todosLosPuntos.length === 0 ? 'No hay datos de ruta para esta fecha' : 'Se necesitan al menos 2 puntos para trazar la ruta'}</div></div>`;
+  }
+}
+
 function resetFormulario() {
-  ['fFechaInicio','fFechaTermino','fPersonal','fComida','fGasolina','fCasetas',
-   'fVuelos','fHospedaje','fNoches','fOtrosGastos','fComentarios'].forEach(id => {
-    document.getElementById(id).value = '';
-  });
+  ['fFechaInicio','fFechaTermino','fPersonal','fDesayuno','fComida','fCena',
+   'fGasolina','fCasetas','fVuelos','fHospedaje','fNoches','fOtrosGastos',
+   'fComentarios','fKMOdometro'].forEach(id => { document.getElementById(id).value = ''; });
   document.getElementById('fEstado').value = '';
   document.getElementById('fDistribuidor').innerHTML = '<option value="">— Selecciona primero el estado —</option>';
   document.getElementById('fDistribuidor').disabled = true;
   document.getElementById('fSucursal').innerHTML = '<option value="">— Selecciona primero el distribuidor —</option>';
   document.getElementById('fSucursal').disabled = true;
   document.getElementById('fZona').textContent = '—';
+  document.getElementById('fKMRecorridos').textContent = '🔄 Ingresa el odómetro para calcular';
   document.getElementById('totalGastosDisplay').textContent = '$0.00';
   seleccionarTipo('Presencial');
   const hoy = new Date().toISOString().split('T')[0];
